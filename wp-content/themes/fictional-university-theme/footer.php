@@ -14,7 +14,7 @@
           <h3 class="headline headline--small">Explore</h3>
           <nav class="nav-list">
             <?php wp_nav_menu([
-              'theme_location' => 'footerLocation1'
+              'theme_location' => 'footerMenu1'
             ]); ?>
           </nav>
         </div>
@@ -23,7 +23,7 @@
           <h3 class="headline headline--small">Learn</h3>
           <nav class="nav-list">
             <?php wp_nav_menu([
-              'theme_location' => 'footerLocation2'
+              'theme_location' => 'footerMenu2'
             ]); ?>
           </nav>
         </div>
