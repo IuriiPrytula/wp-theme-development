@@ -15,19 +15,19 @@ while (have_posts()) {
     <div class="generic-content"><?php the_content(); ?></div>
 
     <?php
-    $relatedProfessors = new WP_Query(array(
+    $relatedProfessors = new WP_Query([
       'posts_per_page' => -1,
       'post_type' => 'professor',
       'orderby' => 'title',
       'order' => 'ASC',
-      'meta_query' => array(
-        array(
+      'meta_query' => [
+        [
           'key' => 'related_programs',
           'compare' => 'LIKE',
           'value' => '"' . get_the_ID() . '"'
-        )
-      )
-    ));
+        ]
+      ]
+    ]);
 
     if ($relatedProfessors->have_posts()) {
       echo '<hr class="section-break">';
@@ -49,26 +49,26 @@ while (have_posts()) {
   wp_reset_postdata();
 
   $today = date('Ymd');
-  $homepageEvents = new WP_Query(array(
+  $homepageEvents = new WP_Query([
     'posts_per_page' => 2,
     'post_type' => 'event',
     'meta_key' => 'event_date',
     'orderby' => 'meta_value_num',
     'order' => 'ASC',
-    'meta_query' => array(
-      array(
+    'meta_query' => [
+      [
         'key' => 'event_date',
         'compare' => '>=',
         'value' => $today,
         'type' => 'numeric'
-      ),
-      array(
+      ],
+      [
         'key' => 'related_programs',
         'compare' => 'LIKE',
         'value' => '"' . get_the_ID() . '"'
-      )
-    )
-  ));
+      ]
+    ]
+  ]);
 
   if ($homepageEvents->have_posts()) {
     echo '<hr class="section-break">';

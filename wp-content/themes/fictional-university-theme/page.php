@@ -23,9 +23,9 @@ while (have_posts()) {
 
 
     <?php
-    $testArray = get_pages(array(
+    $testArray = get_pages([
       'child_of' => get_the_ID()
-    ));
+    ]);
 
     if ($theParent or $testArray) { ?>
       <div class="page-links">
@@ -38,11 +38,11 @@ while (have_posts()) {
             $findChildrenOf = get_the_ID();
           }
 
-          wp_list_pages(array(
+          wp_list_pages([
             'title_li' => NULL,
             'child_of' => $findChildrenOf,
             'sort_column' => 'menu_order'
-          ));
+          ]);
           ?>
         </ul>
       </div>
