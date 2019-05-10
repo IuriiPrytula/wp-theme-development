@@ -19,10 +19,7 @@ gulp.task('js', function() {
   return gulp.src('./js/scripts.js')
         .pipe($.if(isDev, $.sourcemaps.init()))
         .pipe($.minify())
-        .pipe($.if(isDev, $.sourcemaps.write()))
         .pipe(gulp.dest('./js'))
 });
 
 gulp.task('build', gulp.series('styles', 'js'));
-
-gulp.watch('style.scss', gulp.series('styles'));

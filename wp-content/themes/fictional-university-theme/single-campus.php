@@ -6,7 +6,7 @@ while (have_posts()) {
   the_post();
   pageBanner();
   $mapLocation = get_field('campus_location');
-  $mapLink = 'https://maps.google.com/?q='. $mapLocation['lat'] .',' . $mapLocation['lng']
+  $mapLink = 'https://maps.google.com/?q='. $mapLocation['lat'] .',' . $mapLocation['lng'];
   ?>
 
   <div class="container container--narrow page-section">

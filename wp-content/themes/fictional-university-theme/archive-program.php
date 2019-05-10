@@ -1,9 +1,9 @@
 <?php
 get_header();
-pageBanner(array(
+pageBanner([
   'title' => 'All Programs',
   'subtitle' => 'There is something for everyone. Have a look around.'
-));
+]);
 ?>
 
 <div class="container container--narrow page-section">
