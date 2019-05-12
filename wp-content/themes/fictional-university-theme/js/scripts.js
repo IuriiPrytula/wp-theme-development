@@ -10838,7 +10838,7 @@
 								this.resultsDiv.html('<div class="spinner-loader"></div>');
 								this.isSpinnerVisible = true;
 							}
-							this.typingTimer = setTimeout(this.getResults.bind(this), 2000);
+							this.typingTimer = setTimeout(this.getResults.bind(this), 400);
 						} else {
 							this.resultsDiv.html('');
 							this.isSpinnerVisible = false;
@@ -10851,12 +10851,14 @@
 				key: "getResults",
 				value: function getResults() {
 					_jquery2.default.getJSON(`${window.location.origin}/wp-json/wp/v2/posts?search=${this.searchField.val()}`, (posts) => {
-						console.log(posts);
-						this.resultsDiv.html(`
-							<ul class="link-list min-list">
-								${posts.map(post => `<li><a href="${post.link}">${post.title.rendered}</a></li>`).join('')}
-							</ul>
+						_jquery2.default.getJSON(`${window.location.origin}/wp-json/wp/v2/pages?search=${this.searchField.val()}`, (pages) => {
+							var combinedResults = posts.concat(pages);
+							this.resultsDiv.html(`
+							${combinedResults.length ? '<ul class="link-list min-list">' : '<p>No information matched the search</p>'}
+								${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join('')}
+							${combinedResults.length ? '</ul>' : ''}
 						`);
+						});
 					});
 				}
 			}, {
@@ -10875,6 +10877,8 @@
 				value: function openOverlay() {
 					this.searchOverlay.addClass("search-overlay--active");
 					(0, _jquery2.default)("body").addClass("body-no-scroll");
+					this.searchField.val('');
+					setTimeout(() => this.searchField.focus(), 301);
 					console.log("our open method just ran!");
 					this.isOverlayOpen = true;
 				}
