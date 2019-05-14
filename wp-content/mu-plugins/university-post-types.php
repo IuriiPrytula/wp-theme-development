@@ -3,6 +3,8 @@
 function university_post_types()
 {
   register_post_type('event', [
+    'capability_type' => 'event', // Add Event type to members plugin dashboard
+    'map_meta_cap' => true,
     'supports' => ['title', 'editor', 'excerpt'],
     'rewrite' => [
       'slug' => 'events'
@@ -37,7 +39,7 @@ function university_post_types()
   ]);
 
   register_post_type('professor', [
-    'show_in_rest' => true,
+    'show_in_rest' => true, // Allow to get posts data from WP REST API
     'supports' => ['title', 'editor', 'excerpt', 'thumbnail'],
     'public' => true,
     'labels' => [
