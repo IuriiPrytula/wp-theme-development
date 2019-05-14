@@ -10850,15 +10850,55 @@
 			}, {
 				key: "getResults",
 				value: function getResults() {
-					_jquery2.default.getJSON(`${window.location.origin}/wp-json/wp/v2/posts?search=${this.searchField.val()}`, (posts) => {
-						_jquery2.default.getJSON(`${window.location.origin}/wp-json/wp/v2/pages?search=${this.searchField.val()}`, (pages) => {
-							var combinedResults = posts.concat(pages);
-							this.resultsDiv.html(`
-							${combinedResults.length ? '<ul class="link-list min-list">' : '<p>No information matched the search</p>'}
-								${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a>${item.author_name ? ` by <a href="${item.author_link}">${item.author_name}</a>` : ''} </li>`).join('')}
-							${combinedResults.length ? '</ul>' : ''}
+					_jquery2.default.getJSON(`${window.location.origin}/wp-json/university/v1/search?term=${this.searchField.val()}`, (result) => {
+						var generalInfo = [];
+						generalInfo = generalInfo.concat(result.posts, result.pages)
+						this.resultsDiv.html(`
+							<div class="row">
+								<div class="one-third">
+									<h2 class="search-overlay__section-title">General Information</h2>
+									${generalInfo.length ? '<ul class="link-list min-list">' : '<p>No information matched the search</p>'}
+									${generalInfo.map(item => `<li><a href="${item.url}">${item.title}</a></li>`).join('')}
+									${generalInfo.length ? '</ul>' : ''}
+								</div>
+								<div class="one-third">
+									<h2 class="search-overlay__section-title">Programs</h2>
+									${result.programs.length ? '<ul class="link-list min-list">' : '<p>No information matched the search</p>'}
+									${result.programs.map(item => `<li><a href="${item.url}">${item.title}</a></li>`).join('')}
+									${result.programs.length ? '</ul>' : ''}
+									<h2 class="search-overlay__section-title">Professors</h2>
+									${result.professors.length ? '<ul class="professor-cards">' : '<p>No information matched the search</p>'}
+									${result.professors.map(item => `
+									<li class="professor-card__list-item">
+										<a class="professor-card" href="${item.url}">
+											<img class="professor-card__image" src="${item.thumbnail}">
+											<span class="professor-card__name">${item.title}</span>
+										</a>
+									</li>
+									`).join('')}
+									${result.professors.length ? '</ul>' : ''}
+								</div>
+								<div class="one-third">
+									<h2 class="search-overlay__section-title">Campuses</h2>
+									${result.campuses.length ? '<ul class="link-list min-list">' : '<p>No information matched the search</p>'}
+									${result.campuses.map(item => `<li><a href="${item.url}">${item.title}</a></li>`).join('')}
+									${result.campuses.length ? '</ul>' : ''}
+									<h2 class="search-overlay__section-title">Events</h2>
+									${result.events.map(item => `
+										<div class="event-summary">
+										<a class="event-summary__date t-center" href="${item.link}">
+											<span class="event-summary__month">${item.date.month}</span>
+											<span class="event-summary__day">${item.date.day}</span>
+										</a>
+										<div class="event-summary__content">
+											<h5 class="event-summary__title headline headline--tiny"><a href="${item.link}">Poetry Day</a></h5>
+											<p>${item.excerpt}</p>
+										</div>
+										</div>
+									`).join('')}
+								</div>
+							</div>
 						`);
-						});
 					});
 				}
 			}, {

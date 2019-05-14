@@ -32,7 +32,6 @@ function universitySearchResults($data)
         array_push($result['posts'], [
           'title' => get_the_title(),
           'author' => get_the_author(),
-          'author_url' => get_author_posts_url(get_the_author_ID()),
           'url' => get_the_permalink(),
         ]);
         break;
@@ -40,7 +39,6 @@ function universitySearchResults($data)
         array_push($result['pages'], [
           'title' => get_the_title(),
           'author' => get_the_author(),
-          'author_url' => get_author_posts_url(get_the_author_ID()),
           'url' => get_the_permalink(),
         ]);
         break;
@@ -48,23 +46,27 @@ function universitySearchResults($data)
         array_push($result['professors'], [
           'title' => get_the_title(),
           'author' => get_the_author(),
-          'author_url' => get_author_posts_url(get_the_author_ID()),
           'url' => get_the_permalink(),
+          'thumbnail' => get_the_post_thumbnail_url(0, 'professorLandscape'),
         ]);
         break;
       case $postType == 'event':
+        $date = new DateTime(get_field('event_date'));
         array_push($result['events'], [
           'title' => get_the_title(),
           'author' => get_the_author(),
-          'author_url' => get_author_posts_url(get_the_author_ID()),
           'url' => get_the_permalink(),
+          'date' => [
+            'day' => $date->format('d'),
+            'month' => $date->format('M')
+          ],
+          'excerpt' => has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 18)
         ]);
         break;
       case $postType == 'program':
         array_push($result['programs'], [
           'title' => get_the_title(),
           'author' => get_the_author(),
-          'author_url' => get_author_posts_url(get_the_author_ID()),
           'url' => get_the_permalink(),
         ]);
         break;
@@ -72,7 +74,6 @@ function universitySearchResults($data)
         array_push($result['campuses'], [
           'title' => get_the_title(),
           'author' => get_the_author(),
-          'author_url' => get_author_posts_url(get_the_author_ID()),
           'url' => get_the_permalink(),
         ]);
         break;

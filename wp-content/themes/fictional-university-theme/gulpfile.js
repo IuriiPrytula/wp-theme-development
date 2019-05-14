@@ -16,8 +16,7 @@ gulp.task('styles', function() {
 });
 
 gulp.task('js', function() {
-  return gulp.src('./js/dev/*.js')
-        .pipe($.if(isDev, $.sourcemaps.init()))
+  return gulp.src('./js/dev/**/*.js')
         .pipe($.concat('scripts.js'))
         .pipe($.minify())
         .pipe(gulp.dest('./js'))
@@ -26,4 +25,4 @@ gulp.task('js', function() {
 gulp.task('build:all', gulp.series('styles', 'js'));
 
 gulp.watch('./sass/**/*.*', gulp.series('styles'));
-gulp.watch('./js/dev/*.*', gulp.series('js'));
+gulp.watch('./js/dev/**/*.js', gulp.series('js'));
