@@ -1,5 +1,24 @@
 <?php
 
+require_once get_theme_file_path('/inc/search-route.php');
+
+function university_custom_rest()
+{
+  register_rest_field('post', 'author_name', [
+    'get_callback' => function() {
+      return get_the_author();
+    }
+  ]);
+
+  register_rest_field('post', 'author_link', [
+    'get_callback' => function() {
+      return get_author_posts_url(get_the_author_ID());
+    }
+  ]);
+}
+
+add_action('rest_api_init', 'university_custom_rest');
+
 function pageBanner($args = NULL)
 {
 
