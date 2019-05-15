@@ -4,7 +4,7 @@ function university_post_types()
 {
   register_post_type('event', [
     'capability_type' => 'event', // Add Event type to members plugin dashboard
-    'map_meta_cap' => true,
+    'map_meta_cap' => true, // Add Event type to members plugin dashboard
     'supports' => ['title', 'editor', 'excerpt'],
     'rewrite' => [
       'slug' => 'events'
