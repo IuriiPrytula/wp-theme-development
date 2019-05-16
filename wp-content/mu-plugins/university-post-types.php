@@ -68,6 +68,23 @@ function university_post_types()
     ],
     'menu_icon' => 'dashicons-location-alt',
   ]);
+
+  register_post_type('note', [
+    'capability_type' => 'note', // Add Event type to members plugin dashboard
+    'map_meta_cap' => true, // Add Event type to members plugin dashboard
+    'show_in_rest' => true, // Allow to get posts data from WP REST API
+    'supports' => ['title', 'editor'],
+    'public' => false,
+    'show_ui' => true,
+    'labels' => [
+      'name' => 'Notes',
+      'singular_name' => "Note",
+      'add_new_item' => 'Add New Note',
+      'edit_item' => 'Edit Note',
+      'all_items' => 'All Notes'
+    ],
+    'menu_icon' => 'dashicons-welcome-write-blog',
+  ]);
 }
 
 add_action('init', 'university_post_types');

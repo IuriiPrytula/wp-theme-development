@@ -52,10 +52,13 @@ function pageBanner($args = null)
 
 function university_files()
 {
-  wp_enqueue_script('main-university-js', get_theme_file_uri('/js/scripts-min.js'), null, '1.0', true);
+  wp_enqueue_script('main-university-js', get_theme_file_uri('/js/scripts-min.js'), ['jquery'], '1.0', true);
   wp_enqueue_style('custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
   wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
   wp_enqueue_style('university_main_styles', get_stylesheet_uri());
+  wp_localize_script('main-university-js', 'universiytData', [
+    'nonce' => wp_create_nonce('wp_rest') // create and receive variable that allow to delete post with API
+  ]);
 }
 
 add_action('wp_enqueue_scripts', 'university_files');
@@ -141,6 +144,24 @@ function myLoginCss()
 }
 add_action('login_enqueue_scripts', 'myLoginCss');
 
+
+// Force note to be private
+function makeNotePrivate($data)
+{
+  if ($data['post_type'] == 'note' && $data['post_status'] != 'trash') {
+    $data['post_status'] = 'private';
+  }
+
+  return $data;
+}
+add_filter('wp_inser_post_data', 'makeNotePrivate');
+
+// remove "Private: " from titles
+function removePrivatePrefix($title) {
+	$title = str_replace('Private: ', '', $title);
+	return $title;
+}
+add_filter('the_title', 'removePrivatePrefix');
 
 // function universityMapKey($api)
 // {
