@@ -102,8 +102,6 @@ add_action('pre_get_posts', 'university_adjust_queries');
 
 // Redirect subscriber accounts out of admin and onto homepage
 
-add_action('admin_init', 'redirectSubsToFrontend');
-
 function redirectSubsToFrontend()
 {
   $currentUser = wp_get_current_user();
@@ -113,8 +111,7 @@ function redirectSubsToFrontend()
     exit;
   }
 }
-
-add_action('wp_loaded', 'noSubsAdminBar');
+add_action('admin_init', 'redirectSubsToFrontend');
 
 function noSubsAdminBar()
 {
@@ -124,6 +121,7 @@ function noSubsAdminBar()
     show_admin_bar(false);
   }
 }
+add_action('wp_loaded', 'noSubsAdminBar');
 
 // Customize Login Screen
 function myHeaderUrl()
@@ -146,22 +144,25 @@ add_action('login_enqueue_scripts', 'myLoginCss');
 
 
 // Force note to be private
-function makeNotePrivate($data)
+function makeNotePrivate($data, $postarr)
 {
+  // limit 4 posts for subscriber
+  if ($data['post_type'] == 'note') {
+    if (count_user_posts(get_current_user_id(), 'note') > 4 && !$postarr['ID']) {
+      die('You have reached your note limit');
+    }
+
+    $data['post_content'] = sanitize_text_field($data['post_content']);
+    $data['post_title'] = sanitize_text_field($data['post_title']);
+  }
+  
   if ($data['post_type'] == 'note' && $data['post_status'] != 'trash') {
     $data['post_status'] = 'private';
   }
 
   return $data;
 }
-add_filter('wp_inser_post_data', 'makeNotePrivate');
-
-// remove "Private: " from titles
-function removePrivatePrefix($title) {
-	$title = str_replace('Private: ', '', $title);
-	return $title;
-}
-add_filter('the_title', 'removePrivatePrefix');
+add_filter('wp_insert_post_data', 'makeNotePrivate', 10, 2);
 
 // function universityMapKey($api)
 // {

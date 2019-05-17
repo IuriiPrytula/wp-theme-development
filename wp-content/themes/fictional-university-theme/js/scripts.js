@@ -998,6 +998,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           type: 'DELETE',
           success: function success(response) {
             theNote.slideUp();
+
+            if ($('.note-limit-message').hasClass('active')) {
+              $('.note-limit-message').removeClass('active');
+            }
           },
           error: function error(response) {
             console.log('error');
@@ -1062,6 +1066,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             $("\n          <li data-id=\"".concat(response.id, "\">\n            <input readonly class=\"note-title-field\" value=\"").concat(newNote.title, "\" type=\"text\">\n            <span class=\"edit-note\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i> Edit</span>\n            <span class=\"delete-note\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i> Delete</span>\n            <textarea readonly class=\"note-body-field\">").concat(newNote.content, "</textarea>\n            <span class=\"update-note btn btn--blue btn--small\"><i class=\"fa fa-arrow-right\" aria-hidden=\"true\"></i> Edit</span>\n          </li>\n          ")).prependTo('#my-notes').hide().slideDown();
           },
           error: function error(response) {
+            if (response.responseText == "You have reached your note limit") {
+              $('.note-limit-message').addClass('active');
+            }
+
             console.log('error');
             console.log(response);
           }

@@ -22,6 +22,10 @@
         type: 'DELETE',
         success: response => {
           theNote.slideUp();
+
+          if ($('.note-limit-message').hasClass('active')) {
+            $('.note-limit-message').removeClass('active');
+          }
         },
         error: response => {
           console.log('error');
@@ -77,7 +81,6 @@
         },
         url: `${window.location.origin}/wp-json/wp/v2/note/`,
         type: 'POST',
-
         data: newNote,
         success: response => {
           console.log(response);
@@ -92,6 +95,9 @@
           `).prependTo('#my-notes').hide().slideDown();
         },
         error: response => {
+          if (response.responseText == "You have reached your note limit") {
+            $('.note-limit-message').addClass('active');
+          }
           console.log('error');
           console.log(response);
         }
